@@ -11,9 +11,10 @@ import { ApiService } from '../../core/api.service';
   template: `
     <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg border border-gray-100">
-        <div>
-          <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to MIS
+        <div class="flex flex-col items-center justify-center">
+          <img src="logo.png" alt="SAN Law Partners LLP" class="h-24 w-auto mb-4 object-contain">
+          <h2 class="text-center text-3xl font-extrabold text-gray-900">
+            Draft Check MIS
           </h2>
         </div>
         <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
