@@ -9,7 +9,7 @@ import { ApiService } from '../../core/api.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="fixed inset-0 overflow-y-auto bg-gray-50 flex items-center justify-center p-4 sm:p-8">
       <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg border border-gray-100">
         <div class="flex flex-col items-center justify-center">
           <img src="logo.png" alt="SAN Law Partners LLP" class="h-24 w-auto mb-4 object-contain">
