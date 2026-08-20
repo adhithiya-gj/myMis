@@ -30,7 +30,7 @@ export interface Drafter {
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = 'https://mymis.onrender.com/api';
 
   constructor(private http: HttpClient) {}
 
