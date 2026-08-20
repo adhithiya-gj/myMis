@@ -15,19 +15,19 @@ Chart.register(...registerables);
   template: `
     <div class="min-h-screen bg-gray-50 p-4 sm:p-8">
       <div class="max-w-7xl mx-auto">
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
           <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <div class="space-x-3 flex">
-            <a routerLink="/settings" class="bg-white text-gray-700 border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm font-medium flex items-center">
+          <div class="flex flex-wrap gap-3 w-full sm:w-auto">
+            <a routerLink="/settings" class="bg-white text-gray-700 border border-gray-300 px-3 sm:px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm font-medium flex items-center text-sm sm:text-base">
               ⚙️ Settings
             </a>
-            <a routerLink="/entry" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors shadow-sm font-medium flex items-center">
+            <a routerLink="/entry" class="bg-indigo-600 text-white px-3 sm:px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors shadow-sm font-medium flex items-center text-sm sm:text-base">
               + New Entry
             </a>
-            <button (click)="exportToExcel()" class="bg-green-50 text-green-700 border border-green-200 px-4 py-2 rounded-md hover:bg-green-100 transition-colors shadow-sm font-medium flex items-center">
+            <button (click)="exportToExcel()" class="bg-green-50 text-green-700 border border-green-200 px-3 sm:px-4 py-2 rounded-md hover:bg-green-100 transition-colors shadow-sm font-medium flex items-center text-sm sm:text-base">
               📊 Export
             </button>
-            <button (click)="logout()" class="bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-md hover:bg-red-100 transition-colors shadow-sm font-medium flex items-center">
+            <button (click)="logout()" class="bg-red-50 text-red-600 border border-red-200 px-3 sm:px-4 py-2 rounded-md hover:bg-red-100 transition-colors shadow-sm font-medium flex items-center text-sm sm:text-base">
               Logout
             </button>
           </div>
@@ -203,25 +203,25 @@ Chart.register(...registerables);
                     <button *ngIf="filters.docMonth || filters.docYear || filters.docExactDate" (click)="clearFilter('completion')" class="text-red-500 font-bold">✕</button>
                   </div>
                 </div>
-                <div class="flex space-x-2">
-                  <div class="w-1/2 flex space-x-1">
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="flex space-x-1">
                     <select [(ngModel)]="filters.arrMonth" (ngModelChange)="updateFilters()" class="w-1/2 text-sm border-gray-300 rounded-md p-2 border focus:ring-indigo-500 focus:border-indigo-500 bg-white">
                       <option value="">Arr Mth</option>
                       <option value="01">Jan</option><option value="02">Feb</option><option value="03">Mar</option><option value="04">Apr</option><option value="05">May</option><option value="06">Jun</option><option value="07">Jul</option><option value="08">Aug</option><option value="09">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
                     </select>
-                    <input type="text" [(ngModel)]="filters.arrYear" (ngModelChange)="updateFilters()" class="w-1/2 text-sm border-gray-300 rounded-md p-2 border focus:ring-indigo-500 focus:border-indigo-500" placeholder="Year">
+                    <input type="text" [(ngModel)]="filters.arrYear" (ngModelChange)="updateFilters()" class="w-1/2 text-sm border-gray-300 rounded-md p-2 border focus:ring-indigo-500 focus:border-indigo-500 min-w-0" placeholder="Year">
                   </div>
-                  <div class="w-1/2 flex space-x-1">
+                  <div class="flex space-x-1">
                     <select [(ngModel)]="filters.docMonth" (ngModelChange)="updateFilters()" class="w-1/2 text-sm border-gray-300 rounded-md p-2 border focus:ring-indigo-500 focus:border-indigo-500 bg-white">
                       <option value="">Doc Mth</option>
                       <option value="01">Jan</option><option value="02">Feb</option><option value="03">Mar</option><option value="04">Apr</option><option value="05">May</option><option value="06">Jun</option><option value="07">Jul</option><option value="08">Aug</option><option value="09">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
                     </select>
-                    <input type="text" [(ngModel)]="filters.docYear" (ngModelChange)="updateFilters()" class="w-1/2 text-sm border-gray-300 rounded-md p-2 border focus:ring-indigo-500 focus:border-indigo-500" placeholder="Year">
+                    <input type="text" [(ngModel)]="filters.docYear" (ngModelChange)="updateFilters()" class="w-1/2 text-sm border-gray-300 rounded-md p-2 border focus:ring-indigo-500 focus:border-indigo-500 min-w-0" placeholder="Year">
                   </div>
                 </div>
-                <div class="flex space-x-2">
-                  <input type="date" [(ngModel)]="filters.arrExactDate" (ngModelChange)="updateFilters()" class="w-1/2 text-sm border-gray-300 rounded-md p-2 border focus:ring-indigo-500 focus:border-indigo-500" title="Arrival Date">
-                  <input type="date" [(ngModel)]="filters.docExactDate" (ngModelChange)="updateFilters()" class="w-1/2 text-sm border-gray-300 rounded-md p-2 border focus:ring-indigo-500 focus:border-indigo-500" title="Completion Date">
+                <div class="grid grid-cols-2 gap-2">
+                  <input type="date" [(ngModel)]="filters.arrExactDate" (ngModelChange)="updateFilters()" class="w-full text-sm border-gray-300 rounded-md p-2 border focus:ring-indigo-500 focus:border-indigo-500 min-w-0" title="Arrival Date">
+                  <input type="date" [(ngModel)]="filters.docExactDate" (ngModelChange)="updateFilters()" class="w-full text-sm border-gray-300 rounded-md p-2 border focus:ring-indigo-500 focus:border-indigo-500 min-w-0" title="Completion Date">
                 </div>
               </div>
               <div class="flex space-x-2 relative">
