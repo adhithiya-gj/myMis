@@ -106,6 +106,8 @@ app.patch('/api/drafts/:id', async (req: Request, res: Response) => {
     const updatedDraft = await prisma.fileDraft.update({
       where: { sNo: id },
       data: {
+        dateOfArrival: data.dateOfArrival ? new Date(data.dateOfArrival) : undefined,
+        timeOfArrival: data.timeOfArrival !== undefined ? (data.timeOfArrival || null) : undefined,
         dateOfCompletion: data.dateOfCompletion ? new Date(data.dateOfCompletion) : null,
         docTime: data.docTime || null,
         status: data.status,

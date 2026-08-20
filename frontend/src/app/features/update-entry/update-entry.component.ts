@@ -30,6 +30,16 @@ import { ApiService, FileDraft } from '../../core/api.service';
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             
             <div>
+              <label class="block text-sm font-medium text-gray-700">Date of Arrival</label>
+              <input type="date" formControlName="dateOfArrival" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Time of Arrival</label>
+              <input type="time" formControlName="timeOfArrival" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+            </div>
+
+            <div>
               <label class="block text-sm font-medium text-gray-700">Date of Completion</label>
               <input type="date" formControlName="dateOfCompletion" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
             </div>
@@ -78,6 +88,8 @@ export class UpdateEntryComponent implements OnInit {
   draftId!: number;
 
   updateForm = this.fb.group({
+    dateOfArrival: [''],
+    timeOfArrival: [''],
     dateOfCompletion: [''],
     docTime: [''],
     status: ['', Validators.required],
@@ -101,23 +113,24 @@ export class UpdateEntryComponent implements OnInit {
       next: (data) => {
         try {
           this.draft = data;
-          let safeDate = '';
-          if (data.dateOfCompletion) {
-            const d = new Date(data.dateOfCompletion);
-            if (!isNaN(d.getTime())) safeDate = d.toISOString().split('T')[0];
-          } else {
-            safeDate = new Date().toISOString().split('T')[0];
-          }
+          const dateOfArrival = this.draft.dateOfArrival ? new Date(this.draft.dateOfArrival).toISOString().split('T')[0] : '';
+          const dateOfCompletion = this.draft.dateOfCompletion ? new Date(this.draft.dateOfCompletion).toISOString().split('T')[0] : '';
           
-          let defaultTime = data.docTime;
-          if (!defaultTime) {
-            // Default to current time if no docTime is set
-            defaultTime = this.to12Hour(new Date().toTimeString().substring(0, 5));
+          let timeOfArrival = this.draft.timeOfArrival || '';
+          if (timeOfArrival) {
+            timeOfArrival = this.to24Hour(timeOfArrival);
+          }
+
+          let docTime = this.draft.docTime || '';
+          if (docTime) {
+            docTime = this.to24Hour(docTime);
           }
 
           this.updateForm.patchValue({
-            dateOfCompletion: safeDate,
-            docTime: this.to24Hour(defaultTime),
+            dateOfArrival: dateOfArrival,
+            timeOfArrival: timeOfArrival,
+            dateOfCompletion: dateOfCompletion,
+            docTime: docTime,
             status: data.status || 'Pending',
             remarks: data.remarks || ''
           });
@@ -135,13 +148,31 @@ export class UpdateEntryComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.updateForm.valid) {
-      this.submitting = true;
-      const payload = { ...this.updateForm.value } as any;
-      if (payload.docTime) {
-        payload.docTime = this.to12Hour(payload.docTime);
-      }
-      this.apiService.updateDraft(this.draftId, payload).subscribe({
+    if (this.updateForm.invalid || !this.draft?.sNo) return;
+
+    this.submitting = true;
+    const formVal = this.updateForm.value as any;
+
+    let updatedTimeOfArrival = formVal.timeOfArrival || '';
+    if (updatedTimeOfArrival) {
+      updatedTimeOfArrival = this.to12Hour(updatedTimeOfArrival);
+    }
+
+    let updatedDocTime = formVal.docTime || '';
+    if (updatedDocTime) {
+      updatedDocTime = this.to12Hour(updatedDocTime);
+    }
+
+    const updatePayload: Partial<FileDraft> = {
+      dateOfArrival: formVal.dateOfArrival || undefined,
+      timeOfArrival: updatedTimeOfArrival,
+      dateOfCompletion: formVal.dateOfCompletion || undefined,
+      docTime: updatedDocTime,
+      status: formVal.status,
+      remarks: formVal.remarks
+    };
+
+    this.apiService.updateDraft(this.draftId, updatePayload).subscribe({
         next: () => {
           this.router.navigate(['/dashboard']);
         },
@@ -150,7 +181,6 @@ export class UpdateEntryComponent implements OnInit {
           this.submitting = false;
           alert('Failed to update entry');
         }
-      });
     }
   }
 
