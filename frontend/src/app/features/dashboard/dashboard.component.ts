@@ -164,7 +164,13 @@ Chart.register(...registerables);
                     <div class="text-xs text-gray-500" *ngIf="row.timeOfArrival">{{row.timeOfArrival}}</div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {{row.dateOfCompletion ? (row.dateOfCompletion | date:'dd-MM-yyyy') : '—'}}
+                    <ng-container *ngIf="row.dateOfCompletion">
+                      {{row.dateOfCompletion | date:'dd-MM-yyyy'}}
+                    </ng-container>
+                    <ng-container *ngIf="!row.dateOfCompletion">
+                      <span *ngIf="row.status === 'Pending'" class="text-amber-500 text-lg" title="Pending Completion">⚠️</span>
+                      <span *ngIf="row.status !== 'Pending'">—</span>
+                    </ng-container>
                     <div class="text-xs text-gray-500" *ngIf="row.docTime">{{row.docTime}}</div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">{{row.bank}}</td>
@@ -271,6 +277,7 @@ Chart.register(...registerables);
                   <div class="flex flex-col space-y-1">
                     <span>Arr: {{row.dateOfArrival | date:'dd-MM-yyyy'}} <span *ngIf="row.timeOfArrival">{{row.timeOfArrival}}</span></span>
                     <span *ngIf="row.dateOfCompletion">Doc: {{row.dateOfCompletion | date:'dd-MM-yyyy'}} <span *ngIf="row.docTime">{{row.docTime}}</span></span>
+                    <span *ngIf="!row.dateOfCompletion && row.status === 'Pending'">Doc: <span class="text-amber-500 text-base" title="Pending Completion">⚠️</span></span>
                     <span>By: {{row.draftedBy}}</span>
                   </div>
                   <div class="flex space-x-2">
