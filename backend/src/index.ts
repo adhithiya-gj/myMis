@@ -146,10 +146,21 @@ app.put('/api/banks/:id', async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     const { name } = req.body;
+    
+    const oldBank = await prisma.bank.findUnique({ where: { id } });
+    
     const updatedBank = await prisma.bank.update({
       where: { id },
       data: { name }
     });
+    
+    if (oldBank && oldBank.name !== name) {
+      await prisma.fileDraft.updateMany({
+        where: { bank: oldBank.name },
+        data: { bank: name }
+      });
+    }
+    
     res.json(updatedBank);
   } catch (error) {
     res.status(500).json({ error: 'Failed to update bank' });
@@ -160,6 +171,15 @@ app.put('/api/banks/:id', async (req: Request, res: Response) => {
 app.delete('/api/banks/:id', async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
+    const oldBank = await prisma.bank.findUnique({ where: { id } });
+    
+    if (oldBank) {
+      await prisma.fileDraft.updateMany({
+        where: { bank: oldBank.name },
+        data: { bank: 'NA' }
+      });
+    }
+    
     await prisma.bank.delete({ where: { id } });
     res.json({ success: true });
   } catch (error) {
@@ -193,10 +213,21 @@ app.put('/api/drafters/:id', async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     const { name } = req.body;
+    
+    const oldDrafter = await prisma.drafter.findUnique({ where: { id } });
+    
     const updatedDrafter = await prisma.drafter.update({
       where: { id },
       data: { name }
     });
+    
+    if (oldDrafter && oldDrafter.name !== name) {
+      await prisma.fileDraft.updateMany({
+        where: { draftedBy: oldDrafter.name },
+        data: { draftedBy: name }
+      });
+    }
+    
     res.json(updatedDrafter);
   } catch (error) {
     res.status(500).json({ error: 'Failed to update drafter' });
@@ -207,6 +238,15 @@ app.put('/api/drafters/:id', async (req: Request, res: Response) => {
 app.delete('/api/drafters/:id', async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
+    const oldDrafter = await prisma.drafter.findUnique({ where: { id } });
+    
+    if (oldDrafter) {
+      await prisma.fileDraft.updateMany({
+        where: { draftedBy: oldDrafter.name },
+        data: { draftedBy: 'NA' }
+      });
+    }
+    
     await prisma.drafter.delete({ where: { id } });
     res.json({ success: true });
   } catch (error) {
