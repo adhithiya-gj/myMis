@@ -33,7 +33,6 @@ import { ApiService } from '../../core/api.service';
             </div>
           </div>
 
-          </div>
 
           <div class="flex items-center justify-between">
             <div class="flex items-center">
