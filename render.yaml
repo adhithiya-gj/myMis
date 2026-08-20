@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: mis-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://postgres:AdhithiyaGanesan@db.lsqfqcshwaakaixqiuin.supabase.co:5432/postgres?schema=public
