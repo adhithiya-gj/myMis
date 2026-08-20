@@ -181,7 +181,7 @@ export class UpdateEntryComponent implements OnInit {
           this.submitting = false;
           alert('Failed to update entry');
         }
-    }
+      });
   }
 
   private to12Hour(time24: string): string {
