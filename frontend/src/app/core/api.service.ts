@@ -86,12 +86,13 @@ export class ApiService {
     return this.http.get<Drafter[]>(`${this.apiUrl}/drafters`);
   }
 
-  createDrafter(name: string): Observable<Drafter> {
-    return this.http.post<Drafter>(`${this.apiUrl}/drafters`, { name });
-  }
 
   updateDrafter(id: number, name: string): Observable<Drafter> {
     return this.http.put<Drafter>(`${this.apiUrl}/drafters/${id}`, { name });
+  }
+
+  createDrafter(name: string): Observable<Drafter> {
+    return this.http.post<Drafter>(`${this.apiUrl}/drafters`, { name });
   }
 
   deleteDrafter(id: number): Observable<void> {

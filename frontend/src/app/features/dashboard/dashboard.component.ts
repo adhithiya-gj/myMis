@@ -500,6 +500,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   logout() {
     localStorage.removeItem('auth_token');
+    sessionStorage.removeItem('auth_token');
     this.router.navigate(['/login']);
   }
 

@@ -33,13 +33,33 @@ import { ApiService } from '../../core/api.service';
             </div>
           </div>
 
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <input id="remember-me" type="checkbox" formControlName="rememberMe" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+              <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+                Remember me
+              </label>
+            </div>
+          </div>
+
           <div>
             <button type="submit" [disabled]="loginForm.invalid"
                     class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 transition-colors">
               Sign in
             </button>
           </div>
-          <p class="text-red-500 text-sm text-center" *ngIf="error">{{error}}</p>
+          
+          <div *ngIf="error" class="bg-red-50 border-l-4 border-red-400 p-4 mt-4">
+            <div class="flex">
+              <div class="ml-3">
+                <p class="text-sm text-red-700 font-medium">
+                  {{error}}
+                </p>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     </div>
@@ -52,13 +72,14 @@ export class LoginComponent implements OnInit {
 
   loginForm = this.fb.group({
     username: ['', Validators.required],
-    password: ['', Validators.required]
+    password: ['', Validators.required],
+    rememberMe: [false]
   });
 
   error = '';
 
   ngOnInit() {
-    if (localStorage.getItem('auth_token')) {
+    if (localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token')) {
       this.router.navigate(['/dashboard']);
     }
   }
@@ -67,11 +88,15 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.apiService.login(this.loginForm.value).subscribe({
         next: (res) => {
-          localStorage.setItem('auth_token', res.token);
+          if (this.loginForm.value.rememberMe) {
+            localStorage.setItem('auth_token', res.token);
+          } else {
+            sessionStorage.setItem('auth_token', res.token);
+          }
           this.router.navigate(['/dashboard']);
         },
         error: () => {
-          this.error = 'Invalid credentials (try admin/password)';
+          this.error = 'Incorrect username or password. Please try again.';
         }
       });
     }
