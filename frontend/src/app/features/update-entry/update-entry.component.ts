@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
-import { ApiService, FileDraft } from '../../core/api.service';
+import { ApiService, FileDraft, Bank } from '../../core/api.service';
 
 @Component({
   selector: 'app-update-entry',
@@ -32,6 +32,14 @@ import { ApiService, FileDraft } from '../../core/api.service';
             <div>
               <label class="block text-sm font-medium text-gray-700">Date of Arrival</label>
               <input type="date" formControlName="dateOfArrival" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Bank Name</label>
+              <select formControlName="bank" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border bg-white">
+                <option value="" disabled>Select Bank</option>
+                <option *ngFor="let b of banks" [value]="b.name">{{b.name}}</option>
+              </select>
             </div>
 
             <div>
@@ -86,12 +94,14 @@ export class UpdateEntryComponent implements OnInit {
   loading = false;
   draft: FileDraft | null = null;
   draftId!: number;
+  banks: Bank[] = [];
 
   updateForm = this.fb.group({
     dateOfArrival: [''],
     timeOfArrival: [''],
     dateOfCompletion: [''],
     docTime: [''],
+    bank: [''],
     status: ['', Validators.required],
     remarks: ['']
   });
@@ -101,10 +111,18 @@ export class UpdateEntryComponent implements OnInit {
       const id = params.get('id');
       if (id) {
         this.draftId = parseInt(id, 10);
+        this.loadBanks();
         this.loadDraft();
       } else {
         this.router.navigate(['/dashboard']);
       }
+    });
+  }
+
+  loadBanks() {
+    this.apiService.getBanks().subscribe({
+      next: (banks) => this.banks = banks,
+      error: (err) => console.error('Failed to load banks', err)
     });
   }
 
@@ -131,6 +149,7 @@ export class UpdateEntryComponent implements OnInit {
             timeOfArrival: timeOfArrival,
             dateOfCompletion: dateOfCompletion,
             docTime: docTime,
+            bank: data.bank || '',
             status: data.status || 'Pending',
             remarks: data.remarks || ''
           });
@@ -168,6 +187,7 @@ export class UpdateEntryComponent implements OnInit {
       timeOfArrival: updatedTimeOfArrival,
       dateOfCompletion: formVal.dateOfCompletion || undefined,
       docTime: updatedDocTime,
+      bank: formVal.bank || undefined,
       status: formVal.status,
       remarks: formVal.remarks
     };
