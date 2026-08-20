@@ -15,12 +15,11 @@ Chart.register(...registerables);
   template: `
     <div class="min-h-screen bg-gray-50 p-4 sm:p-8">
       <div class="max-w-7xl mx-auto">
-        <div class="w-full flex justify-center mb-6">
-          <img src="logo.png" alt="SAN Law Partners LLP" class="h-16 sm:h-20 w-auto object-contain">
-        </div>
-        
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
-          <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+          <div class="flex items-center space-x-3">
+            <img src="logo.png" alt="SAN Law Partners LLP" class="h-10 sm:h-12 w-auto object-contain">
+            <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+          </div>
           <div class="flex flex-wrap gap-3 w-full sm:w-auto">
             <a routerLink="/settings" class="bg-white text-gray-700 border border-gray-300 px-3 sm:px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm font-medium flex items-center text-sm sm:text-base">
               ⚙️ Settings

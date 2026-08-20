@@ -14,7 +14,7 @@ import { ApiService } from '../../core/api.service';
         <div class="flex flex-col items-center justify-center">
           <img src="logo.png" alt="SAN Law Partners LLP" class="h-24 w-auto mb-4 object-contain">
           <h2 class="text-center text-3xl font-extrabold text-gray-900">
-            Draft Check MIS
+            Login
           </h2>
         </div>
         <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
