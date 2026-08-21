@@ -17,7 +17,6 @@ Chart.register(...registerables);
       <div class="max-w-7xl mx-auto">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
           <div class="flex items-center space-x-3">
-            <img src="logo.png" alt="SAN Law Partners LLP" class="h-10 sm:h-12 w-auto object-contain">
             <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
           </div>
           <div class="flex flex-wrap gap-3 w-full sm:w-auto">
@@ -29,9 +28,6 @@ Chart.register(...registerables);
             </a>
             <button (click)="exportToExcel()" class="bg-green-50 text-green-700 border border-green-200 px-3 sm:px-4 py-2 rounded-md hover:bg-green-100 transition-colors shadow-sm font-medium flex items-center text-sm sm:text-base">
               📊 Export
-            </button>
-            <button (click)="logout()" class="bg-red-50 text-red-600 border border-red-200 px-3 sm:px-4 py-2 rounded-md hover:bg-red-100 transition-colors shadow-sm font-medium flex items-center text-sm sm:text-base">
-              Logout
             </button>
           </div>
         </div>
@@ -505,11 +501,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  logout() {
-    localStorage.removeItem('auth_token');
-    sessionStorage.removeItem('auth_token');
-    this.router.navigate(['/login']);
-  }
 
   exportToExcel() {
     const data = this.filteredData();

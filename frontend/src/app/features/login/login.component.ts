@@ -92,7 +92,7 @@ export class LoginComponent implements OnInit {
           } else {
             sessionStorage.setItem('auth_token', res.token);
           }
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/welcome']);
         },
         error: () => {
           this.error = 'Incorrect username or password. Please try again.';
